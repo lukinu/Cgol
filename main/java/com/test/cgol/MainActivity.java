@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.AttributeSet;
@@ -22,11 +23,12 @@ import java.util.Observer;
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener, Observer,
         SeekBar.OnSeekBarChangeListener {
 
-    public static final int UNIVERSE_VIEW_SIZE_DP = 400;
+    private static final int UNIVERSE_VIEW_SIZE_DP = 400;
     private static final boolean GAME_STOPPED = false;
-    public int mCellSizeDp = 20;
-    public static int mCellSizeInPx;
-    public static Universe mUniverse = Universe.getInstance();
+    private int mCellSizeDp = 20;
+    private static int mCellSizeInPx;
+    public static int mScaledCellSizeInPx;
+    private static Universe mUniverse = Universe.getInstance();
     private static boolean mIsGameRunning = GAME_STOPPED;
     private UniverseView mUniverseView;
     private Button mClrBtn;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private Button mSaveBtn;
     private Button mLoadBtn;
     private SeekBar mSpeedSlider;
+    private SeekBar mZoomSlider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         mLoadBtn.setOnClickListener(this);
         mSpeedSlider = (SeekBar) findViewById(R.id.sbSpeedSlider);
         mSpeedSlider.setOnSeekBarChangeListener(this);
+        mZoomSlider = (ZoomSlider) findViewById(R.id.sbZoom);
+        mZoomSlider.setOnSeekBarChangeListener(this);
         mCellSizeInPx = dpToPx(mCellSizeDp);
+        mScaledCellSizeInPx = mCellSizeInPx;
         int universeSizeCells = UNIVERSE_VIEW_SIZE_DP / mCellSizeDp;
         mUniverse.init(universeSizeCells);
         mUniverse.addObserver(this);
@@ -84,8 +90,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            int x = (int) (event.getX() / mCellSizeInPx);
-            int y = (int) (event.getY() / mCellSizeInPx);
+            int x = (int) (event.getX() / mScaledCellSizeInPx);
+            int y = (int) (event.getY() / mScaledCellSizeInPx);
             Cell cell = mUniverse.getCellByXY(x, y);
             if (cell != null) {
                 cell.switchState();
@@ -179,6 +185,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 mUniverse.getClock().updateTimeSpeed(mSpeedSlider.getProgress());
                 break;
             case R.id.sbZoom:
+                mScaledCellSizeInPx = mCellSizeInPx * (mZoomSlider.getProgress());
+                mUniverseView.invalidate();
                 break;
             default:
                 break;
@@ -189,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     public static class UniverseView extends View {
 
         private Paint mPaint;
+        private Rect mRect;
 
         public UniverseView(Context context) {
             super(context);
@@ -209,6 +218,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             mPaint = new Paint();
             mPaint.setColor(Color.LTGRAY);
             mPaint.setStrokeWidth(1);
+            mRect = new Rect();
         }
 
         @Override
@@ -217,18 +227,22 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             canvas.drawColor(getResources().getColor(R.color.colorPrimary));
             int height = getHeight();
             int width = getWidth();
-            if (mCellSizeInPx != 0) {
-                for (int i = 0; i < (height / mCellSizeInPx); i++) {
-                    int y = i * mCellSizeInPx;
+            if (mScaledCellSizeInPx != 0) {
+                for (int i = 0; i < (height / mScaledCellSizeInPx); i++) {
+                    int y = i * mScaledCellSizeInPx;
                     canvas.drawLine(0, y, width, y, mPaint);
                 }
-                for (int j = 0; j < (width / mCellSizeInPx); j++) {
-                    int x = j * mCellSizeInPx;
+                for (int j = 0; j < (width / mScaledCellSizeInPx); j++) {
+                    int x = j * mScaledCellSizeInPx;
                     canvas.drawLine(x, 0, x, height, mPaint);
                 }
                 for (Cell cell : mUniverse.getAllCells()) {
                     if (cell.isAlive()) {
-                        canvas.drawRect(cell.getRect(), mPaint);
+                        mRect.set(cell.getX() * MainActivity.mScaledCellSizeInPx,
+                                cell.getY() * MainActivity.mScaledCellSizeInPx,
+                                (cell.getX() + 1) * MainActivity.mScaledCellSizeInPx,
+                                (cell.getY() + 1) * MainActivity.mScaledCellSizeInPx);
+                        canvas.drawRect(mRect, mPaint);
                     }
                 }
             }

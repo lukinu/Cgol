@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:class="http://schemas.android.com/apk/res-auto"
     android:id="@+id/relLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -42,7 +43,6 @@
 
     <Button
         android:id="@+id/btnLoad"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/tZoomSlider"
@@ -50,8 +50,9 @@
         android:layout_alignRight="@+id/linearLayout"
         android:text="@string/btn_load" />
 
-    <SeekBar
+    <view
         android:id="@+id/sbZoom"
+        class="com.test.cgol.ZoomSlider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/universeView"
