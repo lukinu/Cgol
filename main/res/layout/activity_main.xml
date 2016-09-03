@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.test.cgol.MainActivity">
+
+    <view
+        android:id="@+id/universeView"
+        class="com.test.cgol.MainActivity$UniverseView"
+        android:layout_width="@dimen/field_width"
+        android:layout_height="@dimen/field_height"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical|center_horizontal" />
+
+    <SeekBar
+        android:id="@+id/sbSpeedSlider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/universeView"
+        android:layout_alignLeft="@+id/universeView"
+        android:layout_alignRight="@+id/universeView"
+        android:layout_alignStart="@+id/universeView"
+        android:layout_below="@+id/universeView"
+        android:layout_marginTop="36dp" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tZoomSlider"
+        android:layout_alignLeft="@+id/tZoomSlider"
+        android:layout_alignStart="@+id/tZoomSlider"
+        android:text="@string/btn_save" />
+
+    <Button
+        android:id="@+id/btnLoad"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tZoomSlider"
+        android:layout_alignEnd="@+id/linearLayout"
+        android:layout_alignRight="@+id/linearLayout"
+        android:text="@string/btn_load" />
+
+    <SeekBar
+        android:id="@+id/sbZoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/universeView"
+        android:layout_alignEnd="@+id/btnLoad"
+        android:layout_alignLeft="@+id/universeView"
+        android:layout_alignRight="@+id/btnLoad"
+        android:layout_alignStart="@+id/universeView"
+        android:layout_marginBottom="36dp" />
+
+    <TextView
+        android:id="@+id/tSpeedSlider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/sbSpeedSlider"
+        android:layout_alignLeft="@+id/sbSpeedSlider"
+        android:layout_alignStart="@+id/sbSpeedSlider"
+        android:layout_marginBottom="24dp"
+        android:text="@string/text_speed_slider"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/tZoomSlider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/sbZoom"
+        android:layout_alignLeft="@+id/sbZoom"
+        android:layout_alignStart="@+id/sbZoom"
+        android:layout_marginBottom="24dp"
+        android:text="@string/text_zoom_slider"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/sbSpeedSlider"
+        android:layout_alignLeft="@+id/sbSpeedSlider"
+        android:layout_alignRight="@+id/sbSpeedSlider"
+        android:layout_alignStart="@+id/sbSpeedSlider"
+        android:layout_below="@+id/sbSpeedSlider"
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnStartStop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_start_text_stopped" />
+
+        <Button
+            android:id="@+id/btnStep"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_step" />
+
+        <Button
+            android:id="@+id/btnRandom"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_random" />
+
+        <Button
+            android:id="@+id/btnClear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/btn_clr_text" />
+    </LinearLayout>
+
+</RelativeLayout>

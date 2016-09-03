@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">"Conway's Game of Life"</string>
+    <string name="btn_clr_text">Clear</string>
+    <string name="btn_start_text_stopped">Start</string>
+    <string name="btn_start_text_started">Stop</string>
+    <string name="menu_help">"?"</string>
+    <string name="btn_step">Step</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_load">Load</string>
+    <string name="text_speed_slider">Speed</string>
+    <string name="text_zoom_slider">Zoom</string>
+    <string name="btn_random">Random</string>
+    <string name="about_title">About</string>
+    <string name="about">Conway\'s Game of Life, v.0.1</string>
+</resources>
