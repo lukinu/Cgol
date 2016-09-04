@@ -2,6 +2,8 @@ package com.test.cgol.utils;
 
 import android.util.Log;
 
+import com.test.cgol.BuildConfig;
+
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,7 +30,9 @@ public class Clock extends Observable {
         mTimerTask = new TimerTask() {
             @Override
             public void run() {
-                Log.d(TAG, "run: timer task started");
+                if (BuildConfig.DEBUG) {
+                    Log.d(TAG, "run: timer task started");
+                }
                 setChanged();
                 notifyObservers();
             }

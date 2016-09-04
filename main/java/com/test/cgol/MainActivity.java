@@ -17,11 +17,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 
+import com.test.cgol.utils.Dialogs;
+
 import java.util.Observable;
 import java.util.Observer;
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener, Observer,
-        SeekBar.OnSeekBarChangeListener {
+        SeekBar.OnSeekBarChangeListener, Dialogs.ValueSetListener<String> {
 
     private static final int UNIVERSE_VIEW_SIZE_DP = 400;
     private static final boolean GAME_STOPPED = false;
@@ -106,22 +108,23 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         switch (v.getId()) {
             case R.id.btnClear:
                 mUniverse.clear();
-                mUniverseView.invalidate();
                 break;
             case R.id.btnStartStop:
                 switchGameState();
                 break;
             case R.id.btnRandom:
                 mUniverse.randomize();
-                mUniverseView.invalidate();
                 break;
             case R.id.btnStep:
                 mUniverse.evolve();
-                mUniverseView.invalidate();
                 break;
             case R.id.btnSave:
+                Dialogs.createInputSaveConfigNameDialog(this, getString(R.string.name_dialog_title),
+                        getString(R.string.name_dialog_save_prompt), this).show();
                 break;
             case R.id.btnLoad:
+                Dialogs.createInputLoadConfigNameDialog(this, getString(R.string.name_dialog_title),
+                        getString(R.string.name_dialog_load_prompt), this).show();
                 break;
             default:
                 break;
@@ -159,6 +162,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             mRandomizeBtn.setEnabled(false);
             mStepBtn.setEnabled(false);
             mUniverseView.setEnabled(false);
+            mSaveBtn.setEnabled(false);
+            mLoadBtn.setEnabled(false);
         } else {
             mUniverse.getClock().stopTimer();
             mStartBtn.setText(R.string.btn_start_text_stopped);
@@ -166,6 +171,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             mRandomizeBtn.setEnabled(true);
             mStepBtn.setEnabled(true);
             mUniverseView.setEnabled(true);
+            mSaveBtn.setEnabled(true);
+            mLoadBtn.setEnabled(true);
         }
     }
 
@@ -190,6 +197,20 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    public void onLoadConfigValueSet(String value) {
+        if (value != null) {
+            mUniverse.load(this, value);
+        }
+    }
+
+    @Override
+    public void onSaveConfigValueSet(String value) {
+        if (value != null) {
+            mUniverse.save(this, value);
         }
     }
 

@@ -1,9 +1,13 @@
 package com.test.cgol;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.test.cgol.utils.Clock;
+import com.test.cgol.utils.ObjectPersistantStorage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -37,9 +41,13 @@ public class Universe extends Observable implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        Log.d(TAG, "update: the mUniverse gets notified by clock");
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "update: the mUniverse gets notified by clock");
+        }
         evolve();
-        Log.d(TAG, "update: the universe notifies gui");
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "update: the universe notifies gui");
+        }
         setChanged();
         notifyObservers();
     }
@@ -75,7 +83,11 @@ public class Universe extends Observable implements Observer {
         for (Cell cell : mCells) {
             cell.evolve();
         }
-        Log.d(TAG, "evolve: the universe completed evolution");
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "evolve: the universe completed evolution");
+        }
+        setChanged();
+        notifyObservers();
     }
 
     private int getAliveNeighboursCount(Cell cell) {
@@ -102,6 +114,8 @@ public class Universe extends Observable implements Observer {
         for (Cell cell : mCells) {
             cell.setState(Cell.STATE_EMPTY);
         }
+        setChanged();
+        notifyObservers();
     }
 
     public void randomize() {
@@ -111,5 +125,35 @@ public class Universe extends Observable implements Observer {
             boolean isAlive = (randInt < 6) ? Cell.STATE_EMPTY : Cell.STATE_ALIVE;
             cell.setState(isAlive);
         }
+        setChanged();
+        notifyObservers();
+    }
+
+    public void save(Context context, String name) {
+        try {
+            ObjectPersistantStorage.put(context, mCells, name);
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "save: the universe saved configuration");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void load(Context context, String name) {
+        try {
+            mCells = (List<Cell>) ObjectPersistantStorage.get(context, name);
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "load: the universe loaded configuration");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast toast = Toast.makeText(context, context.getString(R.string.io_exeption_toast) + name, Toast.LENGTH_SHORT);
+            toast.show();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        setChanged();
+        notifyObservers();
     }
 }

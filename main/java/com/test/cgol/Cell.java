@@ -1,8 +1,12 @@
 package com.test.cgol;
 
 import android.graphics.Rect;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Cell {
+import java.io.Serializable;
+
+public class Cell implements Serializable {
 
     public static final boolean STATE_EMPTY = false;
     public static final boolean STATE_ALIVE = true;
@@ -44,5 +48,4 @@ public class Cell {
     public void evolve() {
         mIsAlive = mNextState;
     }
-
 }

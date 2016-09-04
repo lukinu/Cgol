@@ -12,4 +12,8 @@
     <string name="btn_random">Random</string>
     <string name="about_title">About</string>
     <string name="about">Conway\'s Game of Life, v.0.1</string>
+    <string name="name_dialog_title">Name:</string>
+    <string name="name_dialog_save_prompt">Input the name of configuration to save</string>
+    <string name="name_dialog_load_prompt">Input the name of configuration to load</string>
+    <string name="io_exeption_toast">Can\'t open configuration</string>
 </resources>
