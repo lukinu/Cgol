@@ -8,10 +8,17 @@ import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/*
+* Universal Clock generates ticks for the Universe
+*
+*
+**/
 public class Clock extends Observable {
 
     private static final String TAG = "CLOCK";
+    // basic time quantum:
     private static final int TIME_GRANULE = 10000;
+
     private static Clock ourInstance = new Clock();
     private Timer mTimer;
     private TimerTask mTimerTask;
@@ -47,6 +54,7 @@ public class Clock extends Observable {
         }
     }
 
+    // change time speed on the fly:
     public void updateTimeSpeed(int timeSpeed) {
         this.mTimeSpeed = timeSpeed;
         if (mTimer != null) {

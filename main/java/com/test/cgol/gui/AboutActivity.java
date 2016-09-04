@@ -5,7 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.test.cgol.R;
-
+/*
+* A simplest Activity to display About info
+*
+* */
 public class AboutActivity extends AppCompatActivity {
 
     private TextView mAboutView;

@@ -3,7 +3,10 @@ package com.test.cgol.gui;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.SeekBar;
-
+/*
+* Custom slider providing arbitrary progress values:
+*
+* */
 public class ZoomSlider extends SeekBar {
 
     private static final int MAX_ZOOM_FACTOR = 5;

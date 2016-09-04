@@ -10,9 +10,14 @@ import android.widget.EditText;
 
 import com.test.cgol.BuildConfig;
 
+/*
+* Class instantiates all the dialogs in the app.
+* Notifies listeners on data set.
+* */
 public class Dialogs {
     private static final String TAG = "DIALOGS";
 
+    // create Save-dialog.
     public static Dialog createInputSaveConfigNameDialog(Context context, String title,
                                                          String prompt, final ValueSetListener<String> listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -42,6 +47,7 @@ public class Dialogs {
             listener.onSaveConfigValueSet(value);
     }
 
+    // create load-dialog listener
     public static Dialog createInputLoadConfigNameDialog(Context context, String title,
                                                          String prompt, final ValueSetListener<String> listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

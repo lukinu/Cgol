@@ -14,10 +14,18 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 
+/*
+* The Universe contains all the cells (i.e. creatures)
+* and implements evolution logic of the game. Listens for a Clock's ticks
+* and reports evolution events to GUI
+*
+* */
 public class Universe extends Observable implements Observer {
     private static final String TAG = "UNIVERSE";
     private static Universe mUniverse = new Universe();
+    // universal clock, it listens on
     private Clock mClock;
+    // holds all the cells, i.e. Universe population:
     private List<Cell> mCells;
 
     public static Universe getInstance() {
@@ -30,6 +38,7 @@ public class Universe extends Observable implements Observer {
         mCells = new ArrayList<>();
     }
 
+    // populates the Universe with cells
     public void init(int universeDimentionInCells) {
         for (int j = 0; j < universeDimentionInCells; j++) {
             for (int i = 0; i < universeDimentionInCells; i++) {
@@ -39,6 +48,7 @@ public class Universe extends Observable implements Observer {
         }
     }
 
+    // callback from universal clock - calls evolution and notifies GUI:
     @Override
     public void update(Observable o, Object arg) {
         if (BuildConfig.DEBUG) {
@@ -56,6 +66,7 @@ public class Universe extends Observable implements Observer {
         return mCells;
     }
 
+    // looks for a certain cell by coordinates:
     public Cell getCellByXY(int x, int y) {
         for (Cell cell : mCells) {
             if ((cell.getX() == x) && (cell.getY() == y)) {
@@ -65,7 +76,12 @@ public class Universe extends Observable implements Observer {
         return null;
     }
 
+    /*
+    * runs evolution process in the Universe, that is, the Universe checks each cell against rules
+    * and calculates next state
+    */
     public void evolve() {
+        // calculate next state:
         for (Cell cell : mCells) {
             int aliveNeighboursCount = getAliveNeighboursCount(cell);
             cell.setNextState(cell.isAlive());
@@ -80,16 +96,19 @@ public class Universe extends Observable implements Observer {
                 }
             }
         }
+        // all the cells go next state
         for (Cell cell : mCells) {
             cell.evolve();
         }
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "evolve: the universe completed evolution");
         }
+        // notify GUI:
         setChanged();
         notifyObservers();
     }
 
+    // calculate number of a cell's alive neighbours:
     private int getAliveNeighboursCount(Cell cell) {
         int count = 0;
         Cell nearCell;
@@ -110,6 +129,7 @@ public class Universe extends Observable implements Observer {
         return mClock;
     }
 
+    // kill all the creatures in the Universe;
     public void clear() {
         for (Cell cell : mCells) {
             cell.setState(Cell.STATE_EMPTY);
@@ -118,6 +138,7 @@ public class Universe extends Observable implements Observer {
         notifyObservers();
     }
 
+    // populate the Universe randomly:
     public void randomize() {
         Random rand = new Random();
         for (Cell cell : mCells) {
@@ -129,6 +150,7 @@ public class Universe extends Observable implements Observer {
         notifyObservers();
     }
 
+    // call storage to save the population:
     public void save(Context context, String name) {
         try {
             ObjectPersistantStorage.put(context, mCells, name);
@@ -140,6 +162,7 @@ public class Universe extends Observable implements Observer {
         }
     }
 
+    // call storage to restore the population from saved state:
     public void load(Context context, String name) {
         try {
             mCells = (List<Cell>) ObjectPersistantStorage.get(context, name);
