@@ -1,7 +1,8 @@
-package com.test.cgol;
+package com.test.cgol.gui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -17,6 +18,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 
+import com.test.cgol.Cell;
+import com.test.cgol.R;
+import com.test.cgol.Universe;
 import com.test.cgol.utils.Dialogs;
 
 import java.util.Observable;
@@ -25,9 +29,9 @@ import java.util.Observer;
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener, Observer,
         SeekBar.OnSeekBarChangeListener, Dialogs.ValueSetListener<String> {
 
-    private static final int UNIVERSE_VIEW_SIZE_DP = 400;
+    private static final int UNIVERSE_DIMENTION_IN_CELLS = 20;
     private static final boolean GAME_STOPPED = false;
-    private int mCellSizeDp = 20;
+    private int cellSizeInDp;
     private static int mCellSizeInPx;
     public static int mScaledCellSizeInPx;
     private static Universe mUniverse = Universe.getInstance();
@@ -46,6 +50,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        init();
+    }
+
+    private void init() {
         mUniverseView = (UniverseView) findViewById(R.id.universeView);
         mUniverseView.setOnTouchListener(this);
         mClrBtn = (Button) findViewById(R.id.btnClear);
@@ -64,10 +72,21 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         mSpeedSlider.setOnSeekBarChangeListener(this);
         mZoomSlider = (ZoomSlider) findViewById(R.id.sbZoom);
         mZoomSlider.setOnSeekBarChangeListener(this);
-        mCellSizeInPx = dpToPx(mCellSizeDp);
+        Configuration configuration = getResources().getConfiguration();
+        int screenWidthDp = configuration.screenWidthDp;
+        if (screenWidthDp < 400) {
+            cellSizeInDp = 10;
+        } else {
+            if (screenWidthDp < 600) {
+                cellSizeInDp = 16;
+            } else {
+                cellSizeInDp = 20;
+            }
+        }
+//        cellSizeInDp = (screenWidthDp < 600) ? 10 : 20;
+        mCellSizeInPx = dpToPx(cellSizeInDp);
         mScaledCellSizeInPx = mCellSizeInPx;
-        int universeSizeCells = UNIVERSE_VIEW_SIZE_DP / mCellSizeDp;
-        mUniverse.init(universeSizeCells);
+        mUniverse.init(UNIVERSE_DIMENTION_IN_CELLS);
         mUniverse.addObserver(this);
     }
 

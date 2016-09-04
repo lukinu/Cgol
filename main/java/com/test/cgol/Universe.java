@@ -30,9 +30,9 @@ public class Universe extends Observable implements Observer {
         mCells = new ArrayList<>();
     }
 
-    public void init(int universeSizeCells) {
-        for (int j = 0; j < universeSizeCells; j++) {
-            for (int i = 0; i < universeSizeCells; i++) {
+    public void init(int universeDimentionInCells) {
+        for (int j = 0; j < universeDimentionInCells; j++) {
+            for (int i = 0; i < universeDimentionInCells; i++) {
                 Cell cell = new Cell(i, j);
                 mCells.add(cell);
             }

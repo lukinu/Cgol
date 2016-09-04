@@ -36,20 +36,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/tZoomSlider"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:text="@string/btn_save"
-        android:textSize="@dimen/btn_text_size" />
+        android:layout_alignLeft="@+id/tZoomSlider"
+        android:layout_alignStart="@+id/tZoomSlider"
+        android:text="@string/btn_save" />
 
     <Button
         android:id="@+id/btnLoad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/tZoomSlider"
         android:layout_alignEnd="@+id/linearLayout"
         android:layout_alignRight="@+id/linearLayout"
-        android:layout_alignTop="@+id/btnSave"
-        android:text="@string/btn_load"
-        android:textSize="@dimen/btn_text_size" />
+        android:text="@string/btn_load" />
 
     <view
         android:id="@+id/sbZoom"
@@ -57,9 +55,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/universeView"
-        android:layout_alignEnd="@+id/universeView"
+        android:layout_alignEnd="@+id/btnLoad"
         android:layout_alignLeft="@+id/universeView"
-        android:layout_alignRight="@+id/universeView"
+        android:layout_alignRight="@+id/btnLoad"
         android:layout_alignStart="@+id/universeView"
         android:layout_marginBottom="36dp" />
 
@@ -89,10 +87,10 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/sbSpeedSlider"
+        android:layout_alignLeft="@+id/sbSpeedSlider"
+        android:layout_alignRight="@+id/sbSpeedSlider"
+        android:layout_alignStart="@+id/sbSpeedSlider"
         android:layout_below="@+id/sbSpeedSlider"
         android:layout_marginTop="32dp"
         android:orientation="horizontal">
@@ -102,32 +100,28 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/btn_start_text_stopped"
-            android:textSize="@dimen/btn_text_size" />
+            android:text="@string/btn_start_text_stopped" />
 
         <Button
             android:id="@+id/btnStep"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/btn_step"
-            android:textSize="@dimen/btn_text_size" />
+            android:text="@string/btn_step" />
 
         <Button
             android:id="@+id/btnRandom"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/btn_random"
-            android:textSize="@dimen/btn_text_size" />
+            android:text="@string/btn_random" />
 
         <Button
             android:id="@+id/btnClear"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/btn_clr_text"
-            android:textSize="@dimen/btn_text_size" />
+            android:text="@string/btn_clr_text" />
     </LinearLayout>
 
 </RelativeLayout>

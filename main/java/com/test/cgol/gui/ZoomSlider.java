@@ -1,4 +1,4 @@
-package com.test.cgol;
+package com.test.cgol.gui;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,19 +11,16 @@ public class ZoomSlider extends SeekBar {
     public ZoomSlider(Context context) {
         super(context);
         setMax(MAX_ZOOM_FACTOR);
-        setProgress(0);
     }
 
     public ZoomSlider(Context context, AttributeSet attrs) {
         super(context, attrs);
         setMax(MAX_ZOOM_FACTOR);
-        setProgress(0);
     }
 
     public ZoomSlider(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setMax(MAX_ZOOM_FACTOR);
-        setProgress(0);
     }
 
     @Override
