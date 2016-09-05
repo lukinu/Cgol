@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.text.InputType;
 import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.test.cgol.BuildConfig;
@@ -39,7 +41,17 @@ public class Dialogs {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "createInputSaveConfigNameDialog builds a dialog");
         }
-        return builder.create();
+        final Dialog dialog = builder.create();
+        etConfigName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                }
+            }
+        });
+        return dialog;
     }
 
     private static <T> void notifyListenerSaveConfigValueSet(ValueSetListener<T> listener, T value) {
@@ -69,7 +81,17 @@ public class Dialogs {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "createInputSaveConfigNameDialog builds a dialog");
         }
-        return builder.create();
+        final Dialog dialog = builder.create();
+        etConfigName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                }
+            }
+        });
+        return dialog;
     }
 
     private static <T> void notifyListenerLoadConfigValueSet(ValueSetListener<T> listener, T value) {

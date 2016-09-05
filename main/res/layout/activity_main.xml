@@ -61,7 +61,8 @@
         android:layout_alignLeft="@+id/universeView"
         android:layout_alignRight="@+id/universeView"
         android:layout_alignStart="@+id/universeView"
-        android:layout_marginBottom="36dp" />
+        android:layout_marginBottom="36dp"
+        android:splitTrack="false"/>
 
     <TextView
         android:id="@+id/tSpeedSlider"

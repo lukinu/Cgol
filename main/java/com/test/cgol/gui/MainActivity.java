@@ -1,5 +1,6 @@
 package com.test.cgol.gui;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -15,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.SeekBar;
 
@@ -33,7 +35,7 @@ import java.util.Observer;
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener, Observer,
         SeekBar.OnSeekBarChangeListener, Dialogs.ValueSetListener<String> {
 
-    private static final int UNIVERSE_DIMENTION_IN_CELLS = 20;
+    private static final int UNIVERSE_DIMENSION_IN_CELLS = 20;
     private static final boolean AUTO_GEN_STOPPED = false;
     // size of cell in DP
     private int cellSizeInDp;
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private Button mSaveBtn;
     private Button mLoadBtn;
     private SeekBar mSpeedSlider;
-    private SeekBar mZoomSlider;
+    private ZoomSlider mZoomSlider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,8 +90,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         mSpeedSlider.setOnSeekBarChangeListener(this);
         mZoomSlider = (ZoomSlider) findViewById(R.id.sbZoom);
         mZoomSlider.setOnSeekBarChangeListener(this);
-        // trying to set zoom slider to the start
-        mZoomSlider.setProgress(0); //todo: someth wrong with slider drawable
         // choose cell size in DP depending on screen size and layout:
         Configuration configuration = getResources().getConfiguration();
         int screenWidthDp = configuration.screenWidthDp;
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         // initial setup of a scaled size as equal to non-scaled (i.e. scaling 1:1):
         mScaledCellSizeInPx = mCellSizeInPx;
         // call init of universe, populating it with creatures
-        mUniverse.init(UNIVERSE_DIMENTION_IN_CELLS);
+        mUniverse.init(UNIVERSE_DIMENSION_IN_CELLS);
         // make activity listening for events in the universe:
         mUniverse.addObserver(this);
     }
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
-    // we calculate coordinates of a cell touched and change its state
+    // we calculate coordinates of a touched call and then change its state
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -172,6 +172,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             case R.id.btnSave:
                 Dialogs.createInputSaveConfigNameDialog(this, getString(R.string.name_dialog_title),
                         getString(R.string.name_dialog_save_prompt), this).show();
+//                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+//                dialog.show();
                 break;
             // restore saved state of population in the universe
             case R.id.btnLoad:
@@ -250,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 break;
             // change size of a cell depending on zoom slider value:
             case R.id.sbZoom:
-                mScaledCellSizeInPx = mCellSizeInPx * (mZoomSlider.getProgress());
+                mScaledCellSizeInPx = mCellSizeInPx * (mZoomSlider.getZoomValue());
                 mUniverseView.invalidate();
                 break;
             default:
@@ -274,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
-    // custo view, representing main field of the game:
+    // custom view, representing main field of the game:
     public static class UniverseView extends View {
 
         private Paint mPaint;

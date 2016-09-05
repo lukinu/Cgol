@@ -15,5 +15,6 @@
     <string name="name_dialog_title">Name:</string>
     <string name="name_dialog_save_prompt">Input the name of configuration to save</string>
     <string name="name_dialog_load_prompt">Input the name of configuration to load</string>
-    <string name="io_exeption_toast">Can\'t open configuration</string>
+    <string name="load_exeption_toast">Failed to open configuration</string>
+    <string name="save_exeption_toast">Failed to save configuration</string>
 </resources>

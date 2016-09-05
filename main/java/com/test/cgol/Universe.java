@@ -159,6 +159,8 @@ public class Universe extends Observable implements Observer {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            Toast toast = Toast.makeText(context, context.getString(R.string.save_exeption_toast) + name, Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 
@@ -171,7 +173,7 @@ public class Universe extends Observable implements Observer {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            Toast toast = Toast.makeText(context, context.getString(R.string.io_exeption_toast) + name, Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(context, context.getString(R.string.load_exeption_toast) + name, Toast.LENGTH_SHORT);
             toast.show();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

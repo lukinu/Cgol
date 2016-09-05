@@ -1,15 +1,19 @@
 package com.test.cgol.gui;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.ViewDebug;
 import android.widget.SeekBar;
 /*
-* Custom slider providing arbitrary progress values:
+* Custom slider providing custom progress values:
 *
 * */
 public class ZoomSlider extends SeekBar {
 
     private static final int MAX_ZOOM_FACTOR = 5;
+    private static final String TAG = "ZOOM_SLIDER";
 
     public ZoomSlider(Context context) {
         super(context);
@@ -26,8 +30,7 @@ public class ZoomSlider extends SeekBar {
         setMax(MAX_ZOOM_FACTOR);
     }
 
-    @Override
-    public synchronized int getProgress() {
+    public int getZoomValue() {
         switch (super.getProgress()) {
             case 0:
                 return 1;
