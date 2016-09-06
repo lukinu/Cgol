@@ -1,6 +1,5 @@
 package com.test.cgol.gui;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -8,15 +7,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.SeekBar;
 
@@ -172,8 +170,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             case R.id.btnSave:
                 Dialogs.createInputSaveConfigNameDialog(this, getString(R.string.name_dialog_title),
                         getString(R.string.name_dialog_save_prompt), this).show();
-//                dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-//                dialog.show();
                 break;
             // restore saved state of population in the universe
             case R.id.btnLoad:
@@ -188,14 +184,14 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     // convert sizes from pixel to DP
     public int pxToDp(int px) {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int dp = Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        int dp = Math.round(px / (displayMetrics.density / DisplayMetrics.DENSITY_DEFAULT));
         return dp;
     }
 
     // convert sizes from DP to pixels
     public int dpToPx(int dp) {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        int px = Math.round(dp * displayMetrics.density);
         return px;
     }
 
