@@ -1,6 +1,7 @@
 package com.test.cgol;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ public class Universe extends Observable implements Observer {
     private Clock mClock;
     // holds all the cells, i.e. Universe population:
     private List<Cell> mCells;
+    private EvolveTask mEvolveTask;
 
     public static Universe getInstance() {
         return mUniverse;
@@ -81,31 +83,8 @@ public class Universe extends Observable implements Observer {
     * and calculates next state
     */
     public void evolve() {
-        // calculate next state:
-        for (Cell cell : mCells) {
-            int aliveNeighboursCount = getAliveNeighboursCount(cell);
-            cell.setNextState(cell.isAlive());
-            //todo: check for the end of the game
-            if (cell.isAlive()) {
-                if ((aliveNeighboursCount > 3) || (aliveNeighboursCount < 2)) {
-                    cell.setNextState(Cell.STATE_EMPTY);
-                }
-            } else {
-                if (aliveNeighboursCount == 3) {
-                    cell.setNextState(Cell.STATE_ALIVE);
-                }
-            }
-        }
-        // all the cells go next state
-        for (Cell cell : mCells) {
-            cell.evolve();
-        }
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "evolve: the universe completed evolution");
-        }
-        // notify GUI:
-        setChanged();
-        notifyObservers();
+        mEvolveTask = new EvolveTask();
+        mEvolveTask.execute();
     }
 
     // calculate number of a cell's alive neighbours:
@@ -180,5 +159,46 @@ public class Universe extends Observable implements Observer {
         }
         setChanged();
         notifyObservers();
+    }
+
+    /*
+    * EvolveTask class off-loads a time-consuming evolution calculation into a separate thread
+    *
+    * */
+    private class EvolveTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(final Void... params) {
+            // calculate next state:
+            for (Cell cell : mCells) {
+                int aliveNeighboursCount = getAliveNeighboursCount(cell);
+                cell.setNextState(cell.isAlive());
+                //todo: check for the end of the game
+                if (cell.isAlive()) {
+                    if ((aliveNeighboursCount > 3) || (aliveNeighboursCount < 2)) {
+                        cell.setNextState(Cell.STATE_EMPTY);
+                    }
+                } else {
+                    if (aliveNeighboursCount == 3) {
+                        cell.setNextState(Cell.STATE_ALIVE);
+                    }
+                }
+            }
+            // all the cells go next state
+            for (Cell cell : mCells) {
+                cell.evolve();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if (BuildConfig.DEBUG) {
+                Log.d(TAG, "evolve: the universe completed evolution");
+            }
+            // notify GUI:
+            setChanged();
+            notifyObservers();
+        }
     }
 }
